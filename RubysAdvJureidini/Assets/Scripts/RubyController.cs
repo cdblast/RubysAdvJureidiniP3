@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class RubyController : MonoBehaviour
 {
+
     // Start is called before the first frame update
     void Start()
     {
@@ -20,6 +21,7 @@ public class RubyController : MonoBehaviour
         Vector2 position = transform.position;
         position.y = position.y + 3.0f * vertical * Time.deltaTime;
         position.x = position.x + 3.0f * horizontal * Time.deltaTime;
+        
         transform.position = position;
     }
 }
