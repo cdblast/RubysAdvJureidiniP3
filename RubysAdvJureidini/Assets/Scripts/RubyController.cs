@@ -41,9 +41,14 @@ public class RubyController : MonoBehaviour
     {
         if (Input.GetKeyDown(KeyCode.X))
         {
-            RaycastHit2D hit = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, lookDirection, 1.5f, LayerMask.GetMask("NPC"));
+            RaycastHit2D hit = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, lookDirection, 2.0f, LayerMask.GetMask("NPC"));
             if (hit.collider != null)
             {
+                NonPlayerCharacter character = hit.collider.GetComponent<NonPlayerCharacter>();
+                if (character != null)
+                {
+                    character.DisplayDialog();
+                }
                 Debug.Log("Raycast has hit the object " + hit.collider.gameObject);
             }
         }
@@ -53,7 +58,7 @@ public class RubyController : MonoBehaviour
 
         Vector2 move = new Vector2(horizontal, vertical);
 
-        if(!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
+        if (!Mathf.Approximately(move.x, 0.0f) || !Mathf.Approximately(move.y, 0.0f))
         {
             lookDirection.Set(move.x, move.y);
             lookDirection.Normalize();
@@ -63,29 +68,29 @@ public class RubyController : MonoBehaviour
         animator.SetFloat("Look Y", lookDirection.y);
         animator.SetFloat("Speed", move.magnitude);
 
-        if (isInvincible )
+        if (isInvincible)
         {
             invincibleTimer -= Time.deltaTime;
-            if (invincibleTimer < 0 )
+            if (invincibleTimer < 0)
                 isInvincible = false;
         }
 
-        if(Input.GetKeyDown(KeyCode.C))
+        if (Input.GetKeyDown(KeyCode.C))
         {
             Launch();
         }
-        
+
     }
 
     void FixedUpdate()
     {
         Vector2 position = rigidbody2d.position;
         position.x = position.x + speed * horizontal * Time.deltaTime;
-        position.y = position.y + speed * vertical * Time.deltaTime;      
-        
+        position.y = position.y + speed * vertical * Time.deltaTime;
+
         rigidbody2d.MovePosition(position);
     }
-    
+
     public void ChangeHealth(int amount)
     {
         if (amount < 0)
