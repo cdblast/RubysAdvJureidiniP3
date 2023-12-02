@@ -25,6 +25,10 @@ public class RubyController : MonoBehaviour
     Animator animator;
     Vector2 lookDirection = new Vector2(1, 0);
 
+    AudioSource audioSource;
+    public AudioClip hitSound;
+    public AudioClip throwSound;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -34,6 +38,13 @@ public class RubyController : MonoBehaviour
         currentHealth = maxHealth;
         //QualitySettings.vSyncCount = 0;
         //Application.targetFrameRate = 10;
+
+        audioSource= GetComponent<AudioSource>();
+    }
+
+    public void PlaySound(AudioClip clip)
+    {
+        audioSource.PlayOneShot(clip);
     }
 
     // Update is called once per frame
@@ -44,11 +55,11 @@ public class RubyController : MonoBehaviour
             RaycastHit2D hit = Physics2D.Raycast(rigidbody2d.position + Vector2.up * 0.2f, lookDirection, 1.5f, LayerMask.GetMask("npc"));
             if (hit.collider != null)
             {
-                Debug.Log("1ST HIT");
+                //Debug.Log("1ST HIT");
                 NonPlayerCharacter character = hit.collider.GetComponent<NonPlayerCharacter>();
                 if (character != null)
                 {
-                    Debug.Log("2ND HIT");
+                    //Debug.Log("2ND HIT");
                     character.DisplayDialog();
                 }
             }
@@ -100,6 +111,8 @@ public class RubyController : MonoBehaviour
                 return;
             isInvincible = true;
             invincibleTimer = timeInvincible;
+
+            PlaySound(hitSound);
         }
 
         currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
@@ -114,5 +127,7 @@ public class RubyController : MonoBehaviour
         projectile.Launch(lookDirection, 300);
 
         animator.SetTrigger("Launch");
+        PlaySound(throwSound);
     }
+    //PlaySound(Yippee!);
 }
