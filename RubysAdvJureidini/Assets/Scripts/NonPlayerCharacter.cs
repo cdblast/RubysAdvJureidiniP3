@@ -4,9 +4,8 @@ using UnityEngine;
 
 public class NonPlayerCharacter : MonoBehaviour
 {
-    public float displayTime;
+    public float displayTime = 4.0f;
     public GameObject dialogBox;
-
     private float timerDisplay;
     // Start is called before the first frame update
     void Start()
